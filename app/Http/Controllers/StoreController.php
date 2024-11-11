@@ -14,6 +14,7 @@ class StoreController extends Controller
         return view('stores.index', [
             'stores' => Store::latest()->get()
         ]);
+
     }
 
     /**
@@ -21,7 +22,15 @@ class StoreController extends Controller
      */
     public function create()
     {
-        return view('stores.create');
+        return view('stores.form',[
+            'store' => new Store(),
+            'page_meta' => [
+                'title' => 'Create Store',
+                'description' => 'Create a new store',
+                'method' => 'POST',
+                'url' => route('stores.store'),
+            ]
+        ]);
     }
 
     /**
@@ -50,17 +59,30 @@ class StoreController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Store $store)
+    public function edit(Request $request, Store $store)
     {
-        //
+        // Ensure the authenticated user owns the store before allowing edit
+        abort_if($request->user()->isNot($store->user), 401);
+
+        return view('stores.form', [
+            'store' => $store,
+            'page_meta' => [
+                'title' => 'Edit Store',
+                'description' => 'Edit store: '. $store->name,
+                'method' => 'PUT',
+                'url' => route('stores.update', $store),
+            ]
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Store $store)
+    public function update(StoreRequest $request, Store $store)
     {
-        //
+       $store->update([
+           'name' => $request->name,
+           'description' => $request->description,
+       ]);
+
+       return to_route('stores.index');
     }
 
     /**
