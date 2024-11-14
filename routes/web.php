@@ -31,10 +31,14 @@ Route::middleware('splade')->group(function () {
         ->name('dashboard');
 
 
-    Route::resource('/stores', StoreController::class);
+    Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
 
     // Authenticated routes
     Route::middleware('auth')->group(function () {
+
+        Route::resource('/stores', StoreController::class)->except('index');
+
+
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

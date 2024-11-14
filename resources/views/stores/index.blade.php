@@ -31,11 +31,13 @@
                                {{ $store->description  }}
                            </x-card.description>
 
-                           @if(auth()->check() && $store->user_id == auth()->user()->id)
-                               <a href="{{ route('stores.edit', $store) }}" class="underline text-blue-600 mb-3">
-                                   Edit Store
-                               </a>
-                           @endif
+                          @auth
+                               @if(auth()->check() && $store->user_id == auth()->user()->id)
+                                   <a href="{{ route('stores.edit', $store) }}" class="underline text-blue-600 mb-3">
+                                       Edit Store
+                                   </a>
+                               @endif
+                          @endauth
 
                        </x-card.header>
                    </x-card>

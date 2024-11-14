@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRequest;
 use App\Models\Store;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers;
+
 
 class StoreController extends Controller
 {
+
 
     public function index()
     {
@@ -61,8 +65,7 @@ class StoreController extends Controller
      */
     public function edit(Request $request, Store $store)
     {
-        // Ensure the authenticated user owns the store before allowing edit
-        abort_if($request->user()->isNot($store->user), 401);
+        Gate::authorize('update', $store);
 
         return view('stores.form', [
             'store' => $store,
@@ -77,6 +80,8 @@ class StoreController extends Controller
 
     public function update(StoreRequest $request, Store $store)
     {
+        Gate::authorize('update', $store);
+
        $store->update([
            'name' => $request->name,
            'description' => $request->description,
