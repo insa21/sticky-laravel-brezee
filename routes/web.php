@@ -26,17 +26,22 @@ Route::middleware('splade')->group(function () {
 
     Route::get('/', HomeController::class)->name('home');
 
-    Route::get('/dashboard', DashboardController::class)
-        ->middleware(['auth', 'verified'])
-        ->name('dashboard');
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
+
+//    Route::get('/dashboard', DashboardController::class)
+//        ->middleware(['auth', 'verified'])
+//        ->name('dashboard');
+
 
 
     Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
 
     // Authenticated routes
     Route::middleware('auth')->group(function () {
-
-        Route::resource('/stores', StoreController::class)->except('index');
+        Route::middleware('verified')->group(function () {
+            Route::resource('/stores', StoreController::class)->except('index');
+        }
+        );
 
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
