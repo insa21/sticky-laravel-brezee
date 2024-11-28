@@ -1,5 +1,5 @@
 <!-- Custom File Upload with Inline Preview and Remove Button -->
-<div id="uploadContainer" class="relative flex items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-zinc-500 hover:bg-gray-50 overflow-hidden">
+<div id="uploadContainer" class="relative flex items-center justify-center w-full h-40 border-2 border-dashed border-zinc-700 rounded-lg cursor-pointer hover:border-zinc-500 hover:bg-zinc-900 overflow-hidden">
     <!-- Hidden File Input -->
     <input id="logo" type="file" name="logo" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*" required onchange="showPreview(event)">
 

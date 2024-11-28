@@ -15,7 +15,7 @@ class StorePolicy
     }
 
 
-    public function destroy(User $user, Store $store): Response
+    public function destroy(User $user, Store $store): bool
     {
         // Menggunakan aturan yang sama seperti metode update
         return $this->update($user, $store);

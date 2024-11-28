@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Store;
+use App\Models\User;
+use App\Policies\StorePolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::policy(Store::class, StorePolicy::class);
+        Gate::define('isPartner', function(User $user){
+            return $user->isAdmin() || $user->isPartner();
+        });
+
     }
 }

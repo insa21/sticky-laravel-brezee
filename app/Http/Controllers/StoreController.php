@@ -15,10 +15,9 @@ class StoreController extends Controller
 {
     public function list()
     {
-
-        $stores = Store::with('user')
+        $stores = Store::query()
             ->latest()
-            ->paginate(10);
+            ->paginate(8);
 
         return view('stores.list', [
             'stores' => $stores,
@@ -38,7 +37,7 @@ class StoreController extends Controller
         $stores = Store::query()
             ->where('status', StoreStatus::ACTIVE)
             ->latest()
-            ->get();
+            ->paginate(8);
 
         return view('stores.index', [
             'stores' => $stores,
@@ -90,7 +89,8 @@ class StoreController extends Controller
      */
     public function edit(Request $request, Store $store)
     {
-        Gate::authorize('update', $store);
+//        dd(Gate::check('isPartner',));
+//        Gate::authorize('update', $store);
 
         return view('stores.form', [
             'store' => $store,
@@ -107,17 +107,17 @@ class StoreController extends Controller
     {
         if($request->hasFile('logo')){
             Storage::delete($store->logo);
-            $file = $request->file('logo');
+            $file = $request->file('logo')->store('images/stores');
         } else {
             $file = $store->logo;
         }
 
-        Gate::authorize('update', $store);
+//        Gate::authorize('update', $store);
 
        $store->update([
            'name' => $request->name,
            'description' => $request->description,
-           'logo' => $file->store('images/stores'),
+           'logo' => $file,
        ]);
 
        return to_route('stores.index');

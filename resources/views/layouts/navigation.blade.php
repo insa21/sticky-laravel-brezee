@@ -1,5 +1,5 @@
 <x-splade-toggle>
-    <nav class="bg-white border-b border-gray-100">
+    <nav class="bg-zinc-900 border-b border-zinc-800">
         <!-- Primary Navigation Menu -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
@@ -7,7 +7,7 @@
                     <!-- Logo -->
                     <div class="shrink-0 flex items-center">
                         <Link href="{{ route('home') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <x-application-logo class="block h-9 w-auto fill-current text-white" />
                         </Link>
                     </div>
                     <!-- Nav Link -->
@@ -26,7 +26,7 @@
                     <div class="hidden sm:flex sm:items-center sm:ml-6">
                         <x-dropdown placement="bottom-end">
                             <x-slot name="trigger">
-                                <button class="flex items-center text-sm font-medium text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition duration-150 ease-in-out">
+                                <button class="flex items-center text-sm font-medium text-white bg-zinc-800 border border-zinc-700 rounded-lg p-2  hover:text-white focus:outline-none transition duration-150 ease-in-out">
                                     <div>{{ Auth::user()->name }}</div>
                                     <div class="ml-1">
                                         <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
