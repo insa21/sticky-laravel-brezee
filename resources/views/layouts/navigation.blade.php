@@ -39,6 +39,13 @@
                                 <x-dropdown-link :href="route('dashboard')">
                                     {{ __('Dashboard') }}
                                 </x-dropdown-link>
+
+                                @if(auth()->user()->isAdmin())
+                                    <x-dropdown-link :href="route('stores.list')">
+                                        {{ __('List Store') }}
+                                    </x-dropdown-link>
+                                @endif
+
                                 <x-dropdown-link :href="route('stores.create')">
                                     {{ __('Create new store') }}
                                 </x-dropdown-link>
