@@ -44,8 +44,10 @@ Route::middleware('splade')->group(function () {
         });
 
         Route::middleware('verified')->group(function () {
+            Route::get('/stores/mine', [StoreController::class, 'mine'])->name('stores.mine');
             Route::resource('/stores', StoreController::class)->except('index', 'show');
         });
+
 
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

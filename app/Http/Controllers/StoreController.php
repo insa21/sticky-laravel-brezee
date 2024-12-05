@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 class StoreController extends Controller
 {
+
     public function list()
     {
         $stores = Store::query()
@@ -31,6 +32,17 @@ class StoreController extends Controller
         return back();
     }
 
+    public function mine(Request $request)
+    {
+        $stores = Store::query()
+            ->where('user_id', $request->user()->id)
+            ->latest()
+            ->paginate(8);
+
+        return view('stores.mine', [
+            'stores' => $stores,
+        ]);
+    }
 
     public function index()
     {

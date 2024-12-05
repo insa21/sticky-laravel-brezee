@@ -46,6 +46,10 @@
                                     </x-dropdown-link>
                                 @endif
 
+                                    <x-dropdown-link :href="route('stores.mine')">
+                                        {{ __('My Store') }}
+                                    </x-dropdown-link>
+
                                 <x-dropdown-link :href="route('stores.create')">
                                     {{ __('Create new store') }}
                                 </x-dropdown-link>
