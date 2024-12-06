@@ -8,7 +8,10 @@
                 {{ $store->name }}
             </x-card.title>
             <x-card.description>
-                Created on {{ $store->created_at->format('d F Y') }} by {{ $store->user->name }}
+                Created on {{ $store->created_at->format('d F Y') }}
+                @if (!request()->routeIs('stores.mine'))
+                    by {{ $store->user->name }}
+                @endif
             </x-card.description>
         </x-card.header>
 
@@ -31,13 +34,16 @@
             </x-badge>
 
             <!-- Approve Button -->
-            @if (auth()->user()->isAdmin() && $store->status === StoreStatus::PENDING)
-                <x-splade-form method="PUT" :action="route('stores.approve', $store)" :confirm="__('Approve Store: ' . $store->name)" :confirm-text="__('Are you sure you want to approve this store? Description: ' . $store->description)" :confirm-button="__('Approve')">
-                    <button type="submit"
-                        class="px-4 py-2 bg-zinc-900 hover:bg-zinc-950 border border-zinc-700 hover:border-zinc-800 text-white rounded">
-                        {{ __('Approve') }}
-                    </button>
-                </x-splade-form>
+            @if (isset($isAdmin))
+                @if ($store->status === StoreStatus::PENDING)
+                    <x-splade-form method="PUT" :action="route('stores.approve', $store)" :confirm="__('Approve Store: ' . $store->name)" :confirm-text="__('Are you sure you want to approve this store? Description: ' . $store->description)"
+                        :confirm-button="__('Approve')">
+                        <button type="submit"
+                            class="px-4 py-2 bg-zinc-900 hover:bg-zinc-950 border border-zinc-700 hover:border-zinc-800 text-white rounded">
+                            {{ __('Approve') }}
+                        </button>
+                    </x-splade-form>
+                @endif
             @endif
         </div>
     </x-card.footer>

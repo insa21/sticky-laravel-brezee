@@ -8,9 +8,10 @@
     </x-slot>
 
     <x-container>
+        @php $isAdmin = auth()->user()->isAdmin() @endphp
         <div class="grid grid-cols-4 gap-6">
             @foreach ($stores as $store)
-                <x-stores.item :$store />
+                <x-stores.item :$isAdmin :$store />
             @endforeach
         </div>
 

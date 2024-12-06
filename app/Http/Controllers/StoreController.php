@@ -17,6 +17,7 @@ class StoreController extends Controller
     public function list()
     {
         $stores = Store::query()
+            ->with('user:id,name')
             ->latest()
             ->paginate(8);
 
@@ -25,7 +26,9 @@ class StoreController extends Controller
         ]);
     }
 
-    public function approve(Store $store){
+    public function approve(Store $store)
+    {
+        $store->load('user');
         $store->status = StoreStatus::ACTIVE;
         $store->save();
 
@@ -36,6 +39,7 @@ class StoreController extends Controller
     {
         $stores = Store::query()
             ->where('user_id', $request->user()->id)
+            ->with('user:id,name') // Muat relasi `user` untuk optimasi
             ->latest()
             ->paginate(8);
 
@@ -54,7 +58,6 @@ class StoreController extends Controller
         return view('stores.index', [
             'stores' => $stores,
         ]);
-
     }
 
     /**
@@ -62,7 +65,7 @@ class StoreController extends Controller
      */
     public function create()
     {
-        return view('stores.form',[
+        return view('stores.form', [
             'store' => new Store(),
             'page_meta' => [
                 'title' => 'Create Store',
@@ -101,14 +104,14 @@ class StoreController extends Controller
      */
     public function edit(Request $request, Store $store)
     {
-//        dd(Gate::check('isPartner',));
-//        Gate::authorize('update', $store);
+        //        dd(Gate::check('isPartner',));
+        //        Gate::authorize('update', $store);
 
         return view('stores.form', [
             'store' => $store,
             'page_meta' => [
                 'title' => 'Edit Store',
-                'description' => 'Edit store: '. $store->name,
+                'description' => 'Edit store: ' . $store->name,
                 'method' => 'PUT',
                 'url' => route('stores.update', $store),
             ]
@@ -117,22 +120,22 @@ class StoreController extends Controller
 
     public function update(StoreRequest $request, Store $store)
     {
-        if($request->hasFile('logo')){
+        if ($request->hasFile('logo')) {
             Storage::delete($store->logo);
             $file = $request->file('logo')->store('images/stores');
         } else {
             $file = $store->logo;
         }
 
-//        Gate::authorize('update', $store);
+        //        Gate::authorize('update', $store);
 
-       $store->update([
-           'name' => $request->name,
-           'description' => $request->description,
-           'logo' => $file,
-       ]);
+        $store->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'logo' => $file,
+        ]);
 
-       return to_route('stores.index');
+        return to_route('stores.index');
     }
 
     /**
