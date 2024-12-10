@@ -21,17 +21,16 @@ class RoleSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-      Models\User::factory(10)->create();
+        Models\User::factory(10)->create();
 
-      collect([
-          ['name'=>'admin'],
-          ['name'=>'partner'],
-      ])->each(fn ($role) => Models\Role::create($role));
+        collect([
+            ['name' => 'admin'],
+            ['name' => 'partner'],
+        ])->each(fn($role) => Models\Role::create($role));
 
-      $user2 = Models\User::find(2);
+        $user2 = Models\User::find(2);
 
-      $user->assignRole(Models\Role::find(1));
-      $user2->assignRole(Models\Role::find(2));
-
+        $user->assignRole(Models\Role::find(1));
+        $user2->assignRole(Models\Role::find(2));
     }
 }

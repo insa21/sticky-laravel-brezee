@@ -29,11 +29,14 @@ Route::middleware('splade')->group(function () {
 
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
-//    Route::get('/dashboard', DashboardController::class)
-//        ->middleware(['auth', 'verified'])
-//        ->name('dashboard');
+    //    Route::get('/dashboard', DashboardController::class)
+    //        ->middleware(['auth', 'verified'])
+    //        ->name('dashboard');
 
     Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
+    Route::get('/stores/{store:slug}', [StoreController::class, 'show'])->name('stores.show');
+
+
 
 
     // Authenticated routes
@@ -55,5 +58,5 @@ Route::middleware('splade')->group(function () {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
-    require __DIR__.'/auth.php';
+    require __DIR__ . '/auth.php';
 });
