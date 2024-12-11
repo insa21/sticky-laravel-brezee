@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoreController;
 use App\Http\Middleware\HasRoleAdminMiddleware;
@@ -34,10 +35,7 @@ Route::middleware('splade')->group(function () {
     //        ->name('dashboard');
 
     Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
-    Route::get('/stores/{store:slug}', [StoreController::class, 'show'])->name('stores.show');
-
-
-
+    Route::get('stores/{store:slug}/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
 
     // Authenticated routes
     Route::middleware('auth')->group(function () {
@@ -46,17 +44,21 @@ Route::middleware('splade')->group(function () {
             Route::put('/stores/approve/{store}', [StoreController::class, 'approve'])->name('stores.approve');
         });
 
+
+        Route::resource('stores.products', ProductController::class)->except('show');
+
         Route::middleware('verified')->group(function () {
             Route::get('/stores/mine', [StoreController::class, 'mine'])->name('stores.mine');
             Route::resource('/stores', StoreController::class)->except('index', 'show');
         });
 
 
-
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
+
+    Route::get('/stores/{store:slug}', [StoreController::class, 'show'])->name('stores.show');
 
     require __DIR__ . '/auth.php';
 });

@@ -18,8 +18,11 @@ class StoreController extends Controller
     {
         $stores = Store::query()
             ->with('user:id,name')
+            ->withCount('products')
             ->latest()
             ->paginate(8);
+
+        // return $stores;
 
         return view('stores.list', [
             'stores' => $stores,
@@ -98,6 +101,7 @@ class StoreController extends Controller
     {
         return view('stores.show', [
             'store' => $store->loadCount('products'),
+            'products' => $store->products()->latest()->paginate(10),
         ]);
     }
 
